@@ -1,0 +1,4 @@
+*.env
+*.chroma
+*__pycache__
+*venv
