@@ -57,12 +57,17 @@ def route_question(state: GraphState) -> str:
     print("---ROUTE QUESTION---")
     question = state["question"]
     source: RouteQuery = question_router.invoke({"question": question})
-    if source.datasource == WEBSEARCH:
-        print("---ROUTE QUESTION TO WEB SEARCH---")
-        return WEBSEARCH
-    elif source.datasource == "vectorstore":
+    datasource = source.datasource.strip().lower()
+
+    if datasource == "vectorstore":
         print("---ROUTE QUESTION TO RAG---")
         return RETRIEVE
+    elif datasource == "websearch":
+        print("---ROUTE QUESTION TO WEB SEARCH---")
+        return WEBSEARCH
+    else:
+        print(f"UNEXPECTED datasource '{datasource}', falling back to WEBSEARCH")
+        return WEBSEARCH
 
 workflow = StateGraph(GraphState)
 
